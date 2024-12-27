@@ -13,7 +13,6 @@ Welcome to **E-SHOP**, a simple command-line application for exploring products 
 - [How to Run](#how-to-run)  
 - [Project Structure](#project-structure)  
 - [Usage](#usage)  
-- [Improvements & Suggestions](#improvements--suggestions)  
 - [License](#license)
 
 ---
