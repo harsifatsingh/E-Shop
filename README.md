@@ -131,7 +131,7 @@ obj = mysql.connect(
    ║                       W E L C O M E   T O   E - S H O P                   ║
    ╚═══════════════════════════════════════════════════════════════════════════╝
    ============================================================================
-   Connected to the E-Commerce database!
+   Connected to the E-Shop database!
    ========================================================================
    MAIN MENU
    ========================================================================
@@ -150,7 +150,7 @@ obj = mysql.connect(
 .
 ├─ e-shop.py                    # Main Python script
 ├─ README.md                    # Documentation
-└─ requirements.txt             # Python dependencies (if you choose to use one)
+└─ requirements.txt             # Python dependencies
 ```
 
 **Key Functions** inside `e-shop.py`:
