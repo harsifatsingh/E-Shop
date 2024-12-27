@@ -1,5 +1,43 @@
 import mysql.connector as mysql
 
+# ANSI color codes
+RESET = "\033[0m"
+BOLD = "\033[1m"
+BOLD_GREEN = "\033[1;32m"
+BOLD_BLUE = "\033[1;34m"
+BOLD_MAGENTA = "\033[1;35m"
+BOLD_YELLOW = "\033[1;33m"
+BOLD_CYAN = "\033[1;36m"
+RED = "\033[0;31m"
+
+# ASCII art banner
+BANNER = r"""
+=============================================================================
+╔═══════════════════════════════════════════════════════════════════════════╗
+║                       W E L C O M E   T O   E - S H O P                   ║
+╚═══════════════════════════════════════════════════════════════════════════╝
+=============================================================================
+"""
+
+def print_section_header(title: str):
+    """Prints a nicely formatted header for a major section."""
+    print()
+    print("=" * 73)
+    print(f"{BOLD}{title.upper()}{RESET}")
+    print("=" * 73)
+
+def print_subsection_header(title: str):
+    """Prints a minimal subsection header (e.g., 'Category', 'Products')."""
+    print()
+    print(f"{BOLD_BLUE}{title}{RESET}")
+    print()
+
+def print_spacer():
+    """Prints a simple spacer line to separate sections."""
+    print()
+    print("─" * 73)
+    print()
+
 # --- Database Connection ---
 try:
     obj = mysql.connect(
@@ -9,19 +47,22 @@ try:
         database="E-Commerce"
     )
     cursor = obj.cursor()
-    print("Connected to the E-Commerce database.\n")
+    
+    # Print the banner
+    print(BANNER)
+    
+    # Connected message
+    print(f"{BOLD_GREEN}Connected to the E-Commerce database!{RESET}\n")
 except mysql.Error as err:
-    print(f"Error: {err}")
+    print(f"{RED}Error: {err}{RESET}")
     exit()
 
 
 # --- Category Function ---
 def category():
-    """
-    Displays distinct categories from the database and prompts the user
-    to select one. Shows the products under the chosen category.
-    """
-    print("********** Category **********")
+    print_section_header("Category Search")
+    print_subsection_header("Category")
+
     query = "SELECT DISTINCT CATEGORY FROM main_table"
     cursor.execute(query)
     categories = cursor.fetchall()
@@ -30,25 +71,22 @@ def category():
         print("No categories available.\n")
         return
 
-    # Display categories with numbers
     for idx, cat in enumerate(categories, start=1):
         print(f"{idx}. {cat[0]}")
     print()
 
-    # Prompt user for category selection
     try:
         inp = int(input("Enter the number corresponding to the category: ").strip())
         if inp < 1 or inp > len(categories):
-            print("Invalid selection. Please enter a valid number.\n")
+            print(f"{RED}Invalid selection. Please enter a valid number.\n{RESET}")
             return
     except ValueError:
-        print("Invalid input. Please enter a numerical value.\n")
+        print(f"{RED}Invalid input. Please enter a numerical value.\n{RESET}")
         return
 
     selected_category = categories[inp - 1][0]
     print(f"\nWe have the following products in '{selected_category}':\n")
 
-    # Fetch and display products in the selected category
     query = "SELECT PRODUCT_NAME, PRICE FROM main_table WHERE CATEGORY = %s"
     cursor.execute(query, (selected_category,))
     products = cursor.fetchall()
@@ -59,15 +97,14 @@ def category():
     else:
         print("No products found in this category.")
 
-    print("----------------X-----------------\n")
+    print_spacer()
 
 
 # --- Product Function ---
 def product():
-    """
-    Displays all products from the database with their prices.
-    """
-    print("********** Products **********")
+    print_section_header("Product List")
+    print_subsection_header("Products")
+
     query = "SELECT PRODUCT_NAME, PRICE FROM main_table"
     cursor.execute(query)
     products = cursor.fetchall()
@@ -78,16 +115,14 @@ def product():
         for product_name, price in products:
             print(f"{product_name} - PRICE: {price}")
 
-    print("----------------X-----------------\n")
+    print_spacer()
 
 
 # --- Brand Function ---
 def brand():
-    """
-    Displays distinct brands from the database and prompts the user
-    to select one. Shows the products under the chosen brand.
-    """
-    print("********** Brands Available **********")
+    print_section_header("Brand Search")
+    print_subsection_header("Brands Available")
+
     query = "SELECT DISTINCT BRAND FROM main_table"
     cursor.execute(query)
     brands = cursor.fetchall()
@@ -96,25 +131,22 @@ def brand():
         print("No brands available.\n")
         return
 
-    # Display brands with numbers
     for idx, br in enumerate(brands, start=1):
         print(f"{idx}. {br[0]}")
     print()
 
-    # Prompt user for brand selection
     try:
         inp = int(input("Enter the number corresponding to the brand: ").strip())
         if inp < 1 or inp > len(brands):
-            print("Invalid selection. Please enter a valid number.\n")
+            print(f"{RED}Invalid selection. Please enter a valid number.\n{RESET}")
             return
     except ValueError:
-        print("Invalid input. Please enter a numerical value.\n")
+        print(f"{RED}Invalid input. Please enter a numerical value.\n{RESET}")
         return
 
     selected_brand = brands[inp - 1][0]
     print(f"\nWe have the following available products from '{selected_brand}':\n")
 
-    # Fetch and display products under the selected brand
     query = "SELECT PRODUCT_NAME, PRICE FROM main_table WHERE BRAND = %s"
     cursor.execute(query, (selected_brand,))
     products = cursor.fetchall()
@@ -125,33 +157,29 @@ def brand():
     else:
         print("No products found for this brand.")
 
-    print("----------------X-----------------\n")
+    print_spacer()
 
 
 # --- Order Function ---
 def order():
-    """
-    Prompts the user for contact number, product name, and quantity, then
-    places an order if sufficient quantity is available.
-    """
+    print_section_header("Place an Order")
+
     try:
-        # Get user inputs
-        inpContact = input("Enter your contact number: ").strip()
+        inpContact = input(f"{BOLD_GREEN}Enter your contact number:{RESET} ").strip()
         if not inpContact.isdigit():
-            print("Invalid contact number.\n")
+            print(f"{RED}Invalid contact number.\n{RESET}")
             return
 
-        inpOrder = input("Enter the product you want to order: ").strip()
+        inpOrder = input(f"{BOLD_GREEN}Enter the product you want to order:{RESET} ").strip()
         if not inpOrder:
-            print("Invalid product name.\n")
+            print(f"{RED}Invalid product name.\n{RESET}")
             return
 
-        inpQuantity = int(input("Enter the quantity: "))
+        inpQuantity = int(input(f"{BOLD_GREEN}Enter the quantity:{RESET} "))
         if inpQuantity <= 0:
-            print("Quantity must be a positive integer.\n")
+            print(f"{RED}Quantity must be a positive integer.\n{RESET}")
             return
 
-        # Check quantity in the database
         query = "SELECT QUANTITY, PRODUCT_ID FROM main_table WHERE PRODUCT_NAME = %s"
         cursor.execute(query, (inpOrder,))
         result = cursor.fetchone()
@@ -159,14 +187,12 @@ def order():
         if result:
             available_qty, product_id = result
             if available_qty < inpQuantity:
-                print("Sorry, we do not have enough quantity.\n")
+                print(f"{RED}Sorry, we do not have enough quantity.\n{RESET}")
             else:
-                # Update quantity in the main table
                 update_query = "UPDATE main_table SET QUANTITY = QUANTITY - %s WHERE PRODUCT_NAME = %s"
                 cursor.execute(update_query, (inpQuantity, inpOrder))
                 obj.commit()
 
-                # Insert the order into order_table
                 insert_query = """
                     INSERT INTO order_table 
                     (PRODUCT_ID, PRODUCT_NAME, QUANTITY, CONTACT_DETAILS_OF_CUSTOMER, DATE_OF_DISPATCH) 
@@ -175,54 +201,49 @@ def order():
                 cursor.execute(insert_query, (product_id, inpOrder, inpQuantity, inpContact))
                 obj.commit()
 
-                print("Order placed successfully!\n")
+                print(f"{BOLD_MAGENTA}Order placed successfully!\n{RESET}")
         else:
-            print("Product not found.\n")
+            print(f"{RED}Product not found.\n{RESET}")
 
     except ValueError:
-        print("Invalid input. Quantity must be an integer.\n")
+        print(f"{RED}Invalid input. Quantity must be an integer.\n{RESET}")
     except mysql.Error as err:
-        print(f"Database error: {err}\n")
+        print(f"{RED}Database error: {err}\n{RESET}")
 
 
 # --- Main Menu Function ---
 def main_menu():
-    """
-    Displays the main menu and prompts the user for an action:
-    1) Category
-    2) Product
-    3) Brand
-    4) Place an order
-    5) Exit
-    """
     while True:
-        print("********** Welcome to E-SHOP **********\n")
-        print("Press 1 if you are looking for a category.")
-        print("Press 2 if you are looking for a product.")
-        print("Press 3 if you are looking for a brand.")
-        print("Press 4 if you want to place an order.")
-        print("Press 5 to exit.\n")
+        print_section_header("MAIN MENU")
+        
+        print(f"{BOLD}[ 1 ]{RESET}  Looking for a category.")
+        print(f"{BOLD}[ 2 ]{RESET}  Looking for a product.")
+        print(f"{BOLD}[ 3 ]{RESET}  Looking for a brand.")
+        print(f"{BOLD}[ 4 ]{RESET}  Place an order.")
+        print(f"{BOLD}[ 5 ]{RESET}  Exit.\n")
 
-        try:
-            choice = int(input("Enter your choice: ").strip())
-            print()
-
-            if choice == 1:
-                category()
-            elif choice == 2:
-                product()
-            elif choice == 3:
-                brand()
-            elif choice == 4:
-                order()
-            elif choice == 5:
-                print("Thank you for visiting E-SHOP. Goodbye!")
-                break
-            else:
-                print("ERROR!!! Invalid choice. Please try again.\n")
-
-        except ValueError:
-            print("Invalid input. Please enter a number between 1 and 5.\n")
+        choice = input("Enter your choice: ").strip()
+        print()
+        
+        if not choice.isdigit():
+            print(f"{RED}Invalid input. Please enter a number between 1 and 5.\n{RESET}")
+            continue
+        
+        choice = int(choice)
+        
+        if choice == 1:
+            category()
+        elif choice == 2:
+            product()
+        elif choice == 3:
+            brand()
+        elif choice == 4:
+            order()
+        elif choice == 5:
+            print(f"{BOLD_GREEN}Thank you for visiting E-SHOP. Goodbye!{RESET}")
+            break
+        else:
+            print(f"{RED}ERROR!!! Invalid choice. Please try again.\n{RESET}")
 
 
 # --- Entry Point ---
