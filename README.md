@@ -150,15 +150,15 @@ obj = mysql.connect(
 .
 ├─ e-shop.py                    # Main Python script
 ├─ README.md                    # Documentation
-└─ requirements.txt (optional)  # Python dependencies (if you choose to use one)
+└─ requirements.txt             # Python dependencies (if you choose to use one)
 ```
 
 **Key Functions** inside `e-shop.py`:
 - `main_menu()`: Displays the main menu and handles user choices.  
-- `category()`: Lists categories and products within the chosen category.  
-- `product()`: Lists all products in the database.  
-- `brand()`: Lists brands and products within the chosen brand.  
-- `order()`: Places an order by updating the database accordingly.  
+- `category()` : Lists categories and products within the chosen category.  
+- `product()`  : Lists all products in the database.  
+- `brand()`    : Lists brands and products within the chosen brand.  
+- `order()`    : Places an order by updating the database accordingly.  
 
 ---
 
@@ -179,38 +179,6 @@ obj = mysql.connect(
 
 5. **Exit**  
    - Type `5` to exit the application.
-
----
-
-## Improvements & Suggestions
-
-1. **Use Environment Variables**  
-   - Instead of hardcoding credentials (`ecom_user`, `P@ssword123!`) in the script, consider using environment variables or a separate configuration file for better security.
-
-2. **Add a Requirements File**  
-   - A `requirements.txt` will help others quickly install necessary libraries:  
-     ```bash
-     pip freeze > requirements.txt
-     ```
-     Then, to install:
-     ```bash
-     pip install -r requirements.txt
-     ```
-
-3. **Error Handling & Logging**  
-   - Expand on error handling to log errors in a file, especially for database interactions.
-
-4. **Docker Support**  
-   - Consider packaging this project in a Docker container for easy deployment and environment consistency.
-
-5. **User Interface**  
-   - Expand the command-line interface or transition to a web interface (e.g., Flask) for a more user-friendly experience.
-
-6. **Modular Code Structure**  
-   - Split functionality into multiple files/modules (e.g., `database.py`, `menus.py`, `utils.py`) to keep the codebase organized and maintainable.
-
-7. **Data Validation**  
-   - Enhance input validation (e.g., for product names or brand names) to avoid unexpected SQL errors or data mismatch.
 
 ---
 

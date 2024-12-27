@@ -44,7 +44,7 @@ try:
         host="localhost",
         user="ecom_user",
         password="P@ssword123!",
-        database="E-Commerce"
+        database="E-Shop"
     )
     cursor = obj.cursor()
     
@@ -52,7 +52,7 @@ try:
     print(BANNER)
     
     # Connected message
-    print(f"{BOLD_GREEN}Connected to the E-Commerce database!{RESET}\n")
+    print(f"{BOLD_GREEN}Connected to the E-Shop database!{RESET}\n")
 except mysql.Error as err:
     print(f"{RED}Error: {err}{RESET}")
     exit()
