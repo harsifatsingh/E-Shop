@@ -44,17 +44,17 @@ Welcome to **E-SHOP**, a simple command-line application for exploring products 
 2. **Create the database** and **create a user** with the specified credentials:
    ```sql
    -- Create the database
-   CREATE DATABASE IF NOT EXISTS E-Commerce;
+   CREATE DATABASE IF NOT EXISTS E-Shop;
 
    -- Create a dedicated user (e.g., ecom_user) and set a secure password
    CREATE USER 'ecom_user'@'localhost' IDENTIFIED BY 'P@ssword123!';
-   GRANT ALL PRIVILEGES ON E-Commerce.* TO 'ecom_user'@'localhost';
+   GRANT ALL PRIVILEGES ON E-Shop.* TO 'ecom_user'@'localhost';
    FLUSH PRIVILEGES;
    ```
 
 3. **Select your database**:
    ```sql
-   USE E-Commerce;
+   USE E-Shop;
    ```
 
 4. **Create the main table** (`main_table`) for products:
@@ -102,7 +102,7 @@ obj = mysql.connect(
     host="localhost",
     user="ecom_user",
     password="P@ssword123!",
-    database="E-Commerce"
+    database="E-Shop"
 )
 ```
 
